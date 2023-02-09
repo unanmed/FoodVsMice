@@ -5,8 +5,8 @@ export class Loader {
     private tasks: LoadTask[] = [];
     /** 绑定的响应式变量 */
     private bindedRef?: Ref<number>;
-    /** 加载完成后执行的函数 */
-    private onFulfill?: () => void;
+    /** 加载时的promise */
+    private promise?: Promise<any>;
 
     /** 加载进度，范围0~100 */
     private _progress: number = 0;
@@ -54,34 +54,34 @@ export class Loader {
      */
     start(): Loader {
         let loaded = 0;
-        Promise.all(
-            this.tasks.map(
-                v =>
-                    new Promise<void>(res => {
-                        v.start().then(() => {
-                            loaded++;
-                            this.progress = loaded / this.tasks.length;
-                            res();
-                        });
-                    })
-            )
-        ).then(this.onFulfill);
+        this.promise = Promise.all(
+            this.tasks.map(v => {
+                return new Promise<void>(res => {
+                    v.start().then(() => {
+                        loaded++;
+                        this.progress = loaded / this.tasks.length;
+                        res();
+                    });
+                });
+            })
+        );
         return this;
     }
 
     /**
      * 加载完成后执行函数
      */
-    then(fn: () => void): void {
-        this.onFulfill = fn;
+    then(fn: () => void): Loader {
+        this.promise?.then(fn);
+        return this;
     }
 }
 
 export class LoadTask {
     /** 加载函数 */
     private fn?: () => Promise<void>;
-    /** 加载完成后执行的函数 */
-    private onFulfill?: () => void;
+    /** 加载时的promise */
+    private promise?: Promise<any>;
 
     constructor(fn?: () => Promise<void>) {
         this.fn = fn;
@@ -100,14 +100,15 @@ export class LoadTask {
      */
     start(): LoadTask {
         if (!this.fn) throw new Error(`No loading function set!`);
-        this.fn().then(this.onFulfill);
+        this.promise = this.fn();
         return this;
     }
 
     /**
      * 加载完成后执行函数
      */
-    then(fn: () => void): void {
-        this.onFulfill = fn;
+    then(fn: () => void): LoadTask {
+        this.promise?.then(fn);
+        return this;
     }
 }
