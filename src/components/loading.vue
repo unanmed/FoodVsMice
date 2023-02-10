@@ -50,7 +50,7 @@ function draw() {
         .image('progress.png', 0, 0, length, 18, 258, 520, length, 18)
         .image('pro_head.png', 238.85 + length, 511.5, 43, 33)
         .imageText(`${props.progress.toFixed(0)}%`, font, 495.05, 543.85)
-        .textInfo({ textBaseline: 'top', font: '700 15.5px Verdana' })
+        .textInfo({ textBaseline: 'top', font: '700 17px Verdana' })
         .style(gra)
         .text('加载中···', 388, 544.8)
         .strokeText('加载中···', 388, 544.8);
