@@ -1,8 +1,11 @@
+import { ref } from 'vue';
 import { loadResource } from './loader/load';
+
+export const loaded = ref(false);
 
 export function loadInitResource() {
     const imgs = [
-        'loadingbg.jpg',
+        'loadingbg.png',
         'pro_center.png',
         'pro_head.png',
         'pro_left.png',
@@ -27,5 +30,8 @@ export function loadInitResource() {
         ['images/loading', 'images/loading/text'],
         [imgs, texts]
     );
-    loader.then(() => console.log('===== Load Init Resource Done ====='));
+    loader.then(() => {
+        console.log('===== Load Init Resource Done =====');
+        loaded.value = true;
+    });
 }
