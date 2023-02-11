@@ -29,8 +29,7 @@ import fs from 'fs/promises';
         }
         if (name.endsWith('xml')) {
             const path = `./xml/${name}`;
-            const data = Buffer.from(text, 'base64');
-            await fs.writeFile(path, data);
+            await fs.writeFile(path, text);
         }
         used.push(name);
     }
