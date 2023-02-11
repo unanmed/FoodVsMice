@@ -9,8 +9,8 @@ import fs from 'fs/promises';
         const { request, response } = one;
         const url = request.url;
         const file = url.split('/').at(-1);
-        if (!/.*\.(png|jpg|swf)(\?.*)?$/.test(file)) continue;
-        // 现在只剩下png jpg swf了，提取即可。
+        if (!/.*\.(png|jpg|swf|xml)(\?.*)?$/.test(file)) continue;
+        // 现在只剩下png jpg swf xml了，提取即可。
         const name = file.split('?')[0];
         if (used.includes(name)) continue;
         const { status, content } = response;
@@ -24,6 +24,11 @@ import fs from 'fs/promises';
         }
         if (name.endsWith('swf')) {
             const path = `./swf/${name}`;
+            const data = Buffer.from(text, 'base64');
+            await fs.writeFile(path, data);
+        }
+        if (name.endsWith('xml')) {
+            const path = `./xml/${name}`;
             const data = Buffer.from(text, 'base64');
             await fs.writeFile(path, data);
         }

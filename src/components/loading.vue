@@ -6,7 +6,6 @@
 import { onMounted, onUpdated, ref, watch } from 'vue';
 import { Layout } from '../game/render/layout';
 import { setCanvasSize } from '../game/render/resize';
-import { scale } from '../game/utils';
 
 let can: HTMLCanvasElement;
 let ctx: CanvasRenderingContext2D;
