@@ -1,14 +1,19 @@
 <template>
     <div id="game">
-        <Loading v-if="loaded" :progress="50"></Loading>
+        <component
+            v-for="ui of list"
+            :is="ui.component"
+            v-bind="ui.props ?? {}"
+        ></component>
     </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import Loading from './components/loading.vue';
 import { scale } from './game/utils';
-import { loaded } from './game/init';
+import { ui } from './game/ui';
+
+const list = ui.uiStack;
 
 let game: HTMLDivElement;
 

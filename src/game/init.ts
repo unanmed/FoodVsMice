@@ -35,3 +35,5 @@ export function loadInitResource() {
         loaded.value = true;
     });
 }
+
+function loadGameResource() {}
